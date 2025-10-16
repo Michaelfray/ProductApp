@@ -5,58 +5,66 @@ class Program
 {
     static void Main(string[] args)
     {
+        // Skapar en instans av productService
         var service = new ProductService();
-        bool running = true;
+        // Namnger filvägen
+        string filePath = "products.json";
 
+        // Hämtar produkterna från json filen på filvägen
+        service.LoadFromJson(filePath);
+       
+        bool running = true;
+        // sÅ länge running är true, så körs loopen 
         while (running)
         {
-            Console.WriteLine("\n1) Lägg till produkt  2) Visa alla  0) Avsluta");
-            Console.Write("> ");
-            var choice = Console.ReadLine();
+            Console.WriteLine("\n Meny ");
+            Console.WriteLine("1. Lägg till produkt");
+            Console.WriteLine("2. Visa alla produkter");
+            Console.WriteLine("3. Spara till fil");
+            Console.WriteLine("4. Avsluta");
+            Console.Write("Välj ett alternativ: ");
 
-            if (choice == "1")
-            {
-                Console.Write("Namn: ");
-                var name = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    Console.WriteLine("Ogiltigt namn.");
-                    continue;
-                }
+            // sparar användarens inmatnnig till textsträngen
+            string choice = Console.ReadLine();
+            // 
+            switch (choice)
 
-                Console.Write("Pris: ");
-                if (!decimal.TryParse(Console.ReadLine(), out var price))
-                {
-                    Console.WriteLine("Ogiltigt pris.");
-                    continue;
-                }
+            {
+                case "1":
+                    Console.Write("Ange produktens namn: ");
+                    string name = Console.ReadLine();
 
-                var p = service.AddProduct(name, price);
-                Console.WriteLine($"Tillagd: {p.Id} | {p.Name} | {p.Price} kr");
-            }
-            else if (choice == "2")
-            {
-                var products = service.GetProducts();
-                if (products.Count == 0)
-                {
-                   Console.WriteLine("Inga produkter ännu.");
-                
-                
-                    continue;
-                }
+                    
+                    Console.Write("Ange produktens pris: ");
+                    // // Kontrollerar att användaren skrev in ett giltigt pris (decimalvärde)
+                    if (!decimal.TryParse(Console.ReadLine(), out decimal price))
+                    {
+                        // Avbryter om priset inte är giltigt
+                        Console.WriteLine("Ogiltigt pris!");
+                        break; 
+                    }
+                    //  Skickar in båda argumenten
+                    service.AddProduct(name!, price); 
+                    Console.WriteLine(" Produkt tillagd!");
+                    break;
 
-                Console.WriteLine("\n--- Alla produkter ---");
-                foreach (var p in products)
-                    Console.WriteLine($"{p.Id} | {p.Name} | {p.Price} kr");
-            }
-            else if (choice == "0")
-            {
-                running = false;
-            }
-            else
-            {
-                Console.WriteLine("Välj 1, 2 eller 0.");
+                case "2":
+                    service.GetProducts();
+                    break;
+                case "3":
+                    service.SaveToJson(filePath);
+                    break;
+                case "4":
+                    service.SaveToJson(filePath);
+                    running = false;
+                    Console.WriteLine("Avslutar programmet...");
+                    break;
+                default:
+                    Console.WriteLine(" 1,2,3,4");
+                    break;
+
             }
         }
     }
 }
+

@@ -1,15 +1,21 @@
-﻿using Infrastructure.Models;
-using System.Text.Json;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using Infrastructure.Models;
+using Infrastructure.Repositories;
+using Infrastructure.Interfaces;
+
+
 
 
 namespace Infrastructure.Services
 {
-    // Hanterar all logik kring produkter
+    // Hanterar all logik kring produkterr
     public class ProductService
     {
         // Lista där alla produkter lagras
         private List<Product> _products = new List<Product>();
+        private readonly IJsonFileRepository _repo = new JsonFileRepository();
+
 
         // Lägger till en ny produkt i listan
         public Product AddProduct(string name, decimal price)
@@ -25,7 +31,6 @@ namespace Infrastructure.Services
             // Lägg till produkten i listan
             _products.Add(p);
 
-
             return p;
         }
 
@@ -38,7 +43,18 @@ namespace Infrastructure.Services
 
         }
 
+        public void SaveToJson(string path = "products.json")
+        {
 
+            _products = _repo.LoadFromFile(path);
 
-       }
+        }
+        public void LoadFromJson(string path = "products.json")
+        {
+            _products = _repo.LoadFromFile(path);
+        }
+            
+    }
+
 }
+
