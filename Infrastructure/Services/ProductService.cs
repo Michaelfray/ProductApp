@@ -38,7 +38,7 @@ namespace Infrastructure.Services
 
         public List<Product> GetProducts()
         {
-
+            // returnerar produkter
             return _products;
 
         }
@@ -46,14 +46,16 @@ namespace Infrastructure.Services
         public void SaveToJson(string path = "products.json")
         {
 
-            _products = _repo.LoadFromFile(path);
+            // spara listan till fil// spara listan till fil
+            _repo.SaveToFile(_products, path); 
 
         }
         public void LoadFromJson(string path = "products.json")
         {
+            // Läser in produkterna från JSON-filen och uppdaterar listan i minnet
             _products = _repo.LoadFromFile(path);
         }
-            
+
     }
 
 }

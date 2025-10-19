@@ -28,7 +28,6 @@ public class JsonFileRepository : IJsonFileRepository
         if (!File.Exists(filePath))
         {
             // så skrivs detta ut och en tom lista returneras
-            Console.WriteLine("Ingen fil hittades.");
             return new List<Product>();
         }
 
@@ -38,9 +37,7 @@ public class JsonFileRepository : IJsonFileRepository
 
         // detta returnerar en produktlista från json och listan heter products
         var products = JsonSerializer.Deserialize<List<Product>>(json);
-        // detta skrivs ut när produkterna hämtats från filen
-
-        Console.WriteLine("Produkter lästa från fil. ");
+        
 
         // returnerar produktlistan, om listan är null så skapas en tom lista
         return products ?? new List<Product>();
